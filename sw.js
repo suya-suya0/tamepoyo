@@ -1,5 +1,5 @@
-const NAME = 'tamepoyo-v6-20261019';
-const ASSETS = ['./','./manifest.json','./index_v6.html','./tamepoyo_v6.js','./brand-main-v4.png','./pose-home.png','./pose-ledger.png','./pose-wishes.png','./pose-shared.png','./pose-settings.png','./icon-192.png','./icon-512.png'];
+const NAME = 'tamepoyo-v61-20261019';
+const ASSETS = ['./','./manifest.json','./index_v61.html','./tamepoyo_v61.js','./poyo-transparent-v61.png','./pose-home.png','./pose-ledger.png','./pose-wishes.png','./pose-shared.png','./pose-settings.png','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(NAME).then(c=>c.addAll(ASSETS)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
