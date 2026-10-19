@@ -1,33 +1,11 @@
-const CACHE_NAME = 'tamepoyo-v3-cache';
-self.addEventListener('install', event => {
-  self.skipWaiting();
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll([
-    './',
-    './index_v3.html',
-    './manifest.json',
-    './icon-192.png',
-    './icon-512.png',
-    './brand-main.png',
-    './pose-home.png',
-    './pose-ledger.png',
-    './pose-wishes.png',
-    './pose-shared.png',
-    './pose-settings.png'
-  ]).catch(() => {})));
-});
-self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))));
-  self.clients.claim();
-});
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-  if (url.origin !== location.origin) return;
-  event.respondWith(
-    fetch(event.request).then(response => {
-      const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-      return response;
-    }).catch(() => caches.match(event.request).then(resp => resp || caches.match('./')))
-  );
+const NAME = 'tamepoyo-v4-20261019';
+const ASSETS = ['./','./manifest.json','./index_v4.html','./tamepoyo_v4.js','./brand-main-v4.png','./pose-home.png','./pose-ledger.png','./pose-wishes.png','./pose-shared.png','./pose-settings.png','./icon-192.png','./icon-512.png'];
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(NAME).then(c=>c.addAll(ASSETS)).catch(()=>{}))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',e=>{
+ if(e.request.method!=='GET')return;
+ const u=new URL(e.request.url);
+ if(u.origin!==location.origin)return;
+ // Dynamic GitHub Pages router, HTML and JS must refresh whenever online.
+ e.respondWith(fetch(e.request,{cache:'no-store'}).then(res=>{if(res.ok){const copy=res.clone();caches.open(NAME).then(c=>c.put(e.request,copy)).catch(()=>{})}return res}).catch(()=>caches.match(e.request).then(r=>r||Response.error())));
 });
