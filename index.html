@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#eaf2fb"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ためぽよ"><link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon-192.png"><title>ためぽよ | 最新版を確認中</title><style>
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#edf4fc;color:#355b80;font-family:"M PLUS Rounded 1c",system-ui,sans-serif;text-align:center;padding:22px}.box{width:min(100%,410px);padding:24px 16px;background:#fff;border-radius:24px;box-shadow:0 7px 28px #1b4d8512}.mascot{width:120px;height:120px;object-fit:contain}h1{font-size:25px;margin:5px 0 10px}.desc{font-size:14px;line-height:1.8}a,.btn{border:0;border-radius:15px;background:#5b94cc;color:white;font-size:15px;font-weight:800;padding:13px 18px;display:inline-block;text-decoration:none;cursor:pointer;margin-top:10px}.sub{background:#e8f1fb;color:#35628d}.hidden{display:none}.small{font-size:12px;color:#7c90a4;margin-top:12px}</style></head><body><main class="box"><img class="mascot" src="./poyo-transparent-v61.png" alt="ぽよ"><h1>ためぽよ</h1><div class="desc" id="status" role="status">最新版を探しているぽよ…</div><div id="actions" class="hidden"><a id="openLatest" href="./index_v64.html?launcher=1">ためぽよを開く</a><button class="btn sub" id="retry" type="button">もう一度確認</button></div><div class="small">いつもの家計簿データはSupabaseに保存されるよ</div></main>
+<script>
+(()=>{
+  'use strict';
+  const MIN_VERSION=64;
+  const MAX_CHECKS=40;
+  const MAX_MISSES=3;
+  const TIMEOUT_MS=6500;
+  const $=id=>document.getElementById(id);
+  const root=new URL('./',location.href);
+  const fileFor=n=>new URL('index_v'+n+'.html',root);
+  async function exists(n){
+    const url=fileFor(n);url.searchParams.set('_check',String(Date.now()));
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),TIMEOUT_MS);
+    try {
+      let res=await fetch(url,{method:'HEAD',cache:'no-store',signal:controller.signal,redirect:'follow'});
+      // Some hosting setups do not support HEAD; use GET if explicitly unsupported.
+      if(res.status===405||res.status===501)res=await fetch(url,{method:'GET',cache:'no-store',signal:controller.signal});
+      if(res.ok && (new URL(res.url).pathname===fileFor(n).pathname))return true;
+      return false;
+    }finally{clearTimeout(timer)}
+  }
+  function open(n){
+    const url=fileFor(n);url.searchParams.set('launcher','1');
+    $('openLatest').href=url.href;
+    $('status').textContent='最新版 v'+(n>=60&&n<100?'6.'+(n-60):n)+' を開くぽよ！';
+    location.replace(url.href);
+  }
+  async function find(){
+    $('status').textContent='最新版を探しているぽよ…';$('actions').classList.add('hidden');
+    let best=MIN_VERSION-1,misses=0,failed=false;
+    try {
+      if(navigator.serviceWorker)navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+      // Versions must be added sequentially: index_v65.html, index_v66.html, ...
+      for(let n=MIN_VERSION;n<MIN_VERSION+MAX_CHECKS&&misses<MAX_MISSES;n++){
+        try {if(await exists(n)){best=n;misses=0}else misses++;}
+        catch(e){failed=true;break;}
+      }
+      if(failed)throw new Error('network unavailable');
+      if(best>=MIN_VERSION){open(best);return;}
+      throw new Error('latest page not found');
+    }catch(e){
+      const fallback=new URL('index_v64.html',root);fallback.searchParams.set('launcher','1');
+      $('openLatest').href=fallback.href;
+      $('status').textContent='最新版を確認できなかったぽよ。通信状況を確認して、もう一度試してね。';
+      $('actions').classList.remove('hidden');
+    }
+  }
+  $('retry').addEventListener('click',find);
+  find();
+})();
+</script></body></html>
