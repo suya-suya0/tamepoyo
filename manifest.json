@@ -1,0 +1,24 @@
+{
+  "id": "/tamepoyo/",
+  "name": "\u305f\u3081\u307d\u3088",
+  "short_name": "\u305f\u3081\u307d\u3088",
+  "description": "\u307d\u3088\u3068\u4e00\u7dd2\u306b\u3001\u5bb6\u8a08\u7c3f\u3068\u307b\u3057\u3044\u3082\u306e\u3092\u7ba1\u7406",
+  "lang": "ja",
+  "start_url": "./index_v64.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7faff",
+  "theme_color": "#eaf2fb",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
