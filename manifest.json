@@ -1,0 +1,26 @@
+{
+  "id": "/tamepoyo/",
+  "name": "ためぽよ",
+  "short_name": "ためぽよ",
+  "description": "ぽよと一緒に家計簿とほしいものを管理",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf4fc",
+  "theme_color": "#eaf2fb",
+  "icons": [
+    {
+      "src": "./icon-v80-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-v80-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
