@@ -1,11 +1,10 @@
-ためぽよ v8.2：家計簿の「内容」を任意入力に変更
+ためぽよ v8.5：内容欄が空欄でも保存できる修正
 
-GitHubのtamepoyoリポジトリのトップ階層へ
-index_v82.html と tamepoyo_v82.js をアップロードしてください。
-index.html / sw.js / manifest.json / 既存のPNG / Supabaseは変更不要です。
+GitHubの tamepoyo リポジトリ直下に index_v85.html と tamepoyo_v85.js を追加してください。
+他のファイルは既にv8.3で公開済みであれば再アップロード不要です。
+URL: https://suya-suya0.github.io/tamepoyo/index_v85.html
+既存のSupabase SQLやAndroid APKの変更は不要です。
 
-更新後の確認URL：
-https://suya-suya0.github.io/tamepoyo/index_v82.html
-
-動作：通常の「今日の収支」と「収支を入力／編集」両方で内容が空欄でも保存できます。
-内容のDB値はNULLではなく空文字列として保存します。
+空欄時は内部的に「内容なし」という文字列で保存します（空文字を送信しません）。
+手入力の内容はそのまま保存します。
+注意：Supabase側の実際の制約はオンライン未検証なので、他の原因があれば画面のエラー文を確認してください。
