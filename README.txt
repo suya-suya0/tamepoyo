@@ -1,6 +1,11 @@
-ためぽよ v8.0 アップロード手順
-1. ZIPを解凍し、このフォルダ内のファイルをすべてGitHub Pagesリポジトリのトップ階層へアップロードします。
-2. index_v80.html、tamepoyo_v80.js、新しいぽよPNG6枚、icon-v80-192.png、icon-v80-512.pngを追加します。
-3. manifest.jsonだけは既存の同名ファイルを置き換えます。固定のindex.htmlとsw.js、カテゴリ用poyo-cat-01～35は変更しません。
-4. Commit changesで反映します。ホーム画面のアプリアイコンは端末のキャッシュで古いままのことがあります。
-注意：本アップデートは画像の割り当てとアイコン変更のみです。SupabaseのSQLは不要です。
+ためぽよ v8.2：家計簿の「内容」を任意入力に変更
+
+GitHubのtamepoyoリポジトリのトップ階層へ
+index_v82.html と tamepoyo_v82.js をアップロードしてください。
+index.html / sw.js / manifest.json / 既存のPNG / Supabaseは変更不要です。
+
+更新後の確認URL：
+https://suya-suya0.github.io/tamepoyo/index_v82.html
+
+動作：通常の「今日の収支」と「収支を入力／編集」両方で内容が空欄でも保存できます。
+内容のDB値はNULLではなく空文字列として保存します。
